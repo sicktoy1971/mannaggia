@@ -32,9 +32,18 @@ shutdown=false
 off=false
 DELSTRING1="</FONT>"
 DELSTRING2="</b>"
-DEFPLAYER="mplayer -really-quiet -ao alsa"
+#DEFPLAYER="mplayer -really-quiet -ao alsa"
+DEFPLAYER="/usr/local/bin/mplayer" 
 PLAYER="${PLAYER:-$DEFPLAYER}"
 LC_CTYPE=C
+MACOSX=1
+
+if [ $MACOSX -eq 1 ]
+then
+	export LC_CTYPE=C
+	export LC_ALL=C
+	PLAYER="/usr/bin/say"
+fi
 
 if [ $(uname) = "Darwin" ]
 	then
@@ -123,7 +132,7 @@ while [ "$nds" != 0 ]
 	do
 	# shellcheck disable=SC2019
 	MANNAGGIA="Mannaggia $(curl -s "www.santiebeati.it/$(</dev/urandom tr -dc A-Z|head -c1)/"|grep -a tit|cut -d'>' -f 4-9|$shufCmd -n1 |awk -F "$DELSTRING1" '{print$1$2}'|awk -F "$DELSTRING2" '{print$1}' | iconv -f ISO-8859-1)"
-	MANNAGGIAURL="http://www.ispeech.org/p/generic/getaudio?text=$MANNAGGIA%2C&voice=euritalianmale&speed=0&action=convert"
+	#MANNAGGIAURL="http://www.ispeech.org/p/generic/getaudio?text=$MANNAGGIA%2C&voice=euritalianmale&speed=0&action=convert&apikey=775da1bf3e027cca63c74129cb4e3de7"
 
 	if [ "$wallflag" = true ]
 		then
@@ -141,7 +150,12 @@ while [ "$nds" != 0 ]
 
 	if [ "$audioflag" = true ]
 		then
-		$PLAYER "$MANNAGGIAURL" 2>/dev/null
+		if [ $MACOSX -eq 1 ]
+		then
+			$PLAYER $MANNAGGIA
+		else
+			$PLAYER "$MANNAGGIAURL" 2>/dev/null
+		fi	
 	fi
 
 	sleep "$spm"
@@ -152,3 +166,4 @@ if [ $shutdown = true -a $UID = 0 ]
 		then
 		halt
 fi
+
