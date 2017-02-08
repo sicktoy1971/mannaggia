@@ -132,7 +132,7 @@ while [ "$nds" != 0 ]
 	do
 	# shellcheck disable=SC2019
 	MANNAGGIA="Mannaggia $(curl -s "www.santiebeati.it/$(</dev/urandom tr -dc A-Z|head -c1)/"|grep -a tit|cut -d'>' -f 4-9|$shufCmd -n1 |awk -F "$DELSTRING1" '{print$1$2}'|awk -F "$DELSTRING2" '{print$1}' | iconv -f ISO-8859-1)"
-	#MANNAGGIAURL="http://www.ispeech.org/p/generic/getaudio?text=$MANNAGGIA%2C&voice=euritalianmale&speed=0&action=convert&apikey=775da1bf3e027cca63c74129cb4e3de7"
+	MANNAGGIAURL="http://www.ispeech.org/p/generic/getaudio?text=$MANNAGGIA%2C&voice=euritalianmale&speed=0&action=convert&apikey=775da1bf3e027cca63c74129cb4e3de7"
 
 	if [ "$wallflag" = true ]
 		then
